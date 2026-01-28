@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack Bryan - Artist Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Garamond', serif;
+            background-color: #f4f1ea;
+            color: #3d3529;
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #c9b99a;
+            padding: 60px 30px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            margin-bottom: 50px;
+        }
+
+        .name-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .monogram {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .sidebar h1 {
+            font-size: 1.8em;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #5a4a3a;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 0.85em;
+            color: #8b7355;
+            font-style: italic;
+            margin-left: 60px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 20px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #5a4a3a;
+            font-size: 1.1em;
+            display: block;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #8b7355;
+        }
+
+        .nav-menu a.active {
+            color: #8b7355;
+            border-left: 2px solid #8b7355;
+            padding-left: 10px;
+        }
+
+        .nav-menu .secondary {
+            font-size: 0.9em;
+            color: #8b7355;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .about-section {
+            max-width: 700px;
+            margin: 100px auto;
+        }
+
+        .about-section h2 {
+            font-size: 2em;
+            font-weight: 300;
+            color: #5a4a3a;
+            margin-bottom: 30px;
+        }
+
+        .about-section p {
+            font-size: 1.15em;
+            color: #6b5d4f;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .contact-section {
+            max-width: 700px;
+            margin: 100px auto;
+        }
+
+        .contact-section h2 {
+            font-size: 2em;
+            font-weight: 300;
+            color: #5a4a3a;
+            margin-bottom: 30px;
+        }
+
+        .contact-section p {
+            font-size: 1.15em;
+            color: #6b5d4f;
+            margin-bottom: 15px;
+        }
+
+        .contact-section a {
+            color: #8b7355;
+            text-decoration: none;
+            border-bottom: 1px solid #c9b99a;
+        }
+
+        .filter-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #a89176;
+            color: #5a4a3a;
+            padding: 8px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover {
+            background-color: #d4c5a9;
+        }
+
+        .filter-btn.active {
+            background-color: #8b7355;
+            color: #f4f1ea;
+            border-color: #8b7355;
+        }
+
+        .gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            column-count: 3;
+            column-gap: 20px;
+        }
+
+        .artwork {
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(61, 53, 41, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+            break-inside: avoid;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .artwork:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(61, 53, 41, 0.15);
+        }
+
+        .artwork img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .artwork-info {
+            padding: 15px 5px 5px;
+        }
+
+        .artwork-title {
+            font-size: 1.1em;
+            color: #5a4a3a;
+            margin-bottom: 5px;
+        }
+
+        .artwork-medium {
+            font-size: 0.9em;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        .artwork-tags {
+            font-size: 0.85em;
+            color: #a89176;
+            margin-top: 8px;
+        }
+
+        .artwork.hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: #8b7355;
+            font-size: 0.9em;
+            border-top: 1px solid #c9b99a;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                padding: 30px 20px;
+                border-right: none;
+                border-bottom: 1px solid #c9b99a;
+            }
+
+            .sidebar-header {
+                margin-bottom: 30px;
+            }
+
+            .name-container {
+                gap: 10px;
+            }
+
+            .monogram {
+                width: 35px;
+                height: 35px;
+            }
+
+            .sidebar h1 {
+                font-size: 1.5em;
+            }
+
+            .subtitle {
+                font-size: 0.8em;
+                margin-left: 45px;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .nav-menu li {
+                margin-bottom: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .gallery {
+                column-count: 1;
+            }
+
+            .about-section,
+            .contact-section {
+                margin: 40px auto;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery {
+                column-count: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="name-container">
+                <img src="monogram.png" alt="JB" class="monogram">
+                <h1>Jack Bryan</h1>
+            </div>
+            <p class="subtitle">Freelance Illustrator based in New York City</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#" class="nav-link active" data-section="portfolio">Portfolio</a></li>
+            <li><a href="#" class="nav-link" data-section="about">About</a></li>
+            <li><a href="https://instagram.com/yourhandle" target="_blank" class="secondary">Instagram</a></li>
+            <li><a href="#" class="nav-link secondary" data-section="contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="section active">
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="featured">Featured</button>
+                <button class="filter-btn" data-filter="all">All Works</button>
+                <button class="filter-btn" data-filter="landscape">Landscape</button>
+                <button class="filter-btn" data-filter="portrait">Portrait</button>
+                <button class="filter-btn" data-filter="abstract">Abstract</button>
+            </div>
+
+            <div class="gallery" id="gallery">
+        <!-- ARTWORK 1 -->
+        <div class="artwork" data-tags="featured,landscape">
+            <img src="https://via.placeholder.com/400x400/8b7355/f4f1ea?text=Artwork+1" alt="Artwork 1">
+            <div class="artwork-info">
+                <div class="artwork-title">Desert Dawn</div>
+                <div class="artwork-medium">Oil on canvas, 2024</div>
+                <div class="artwork-tags">#featured #landscape</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 2 -->
+        <div class="artwork" data-tags="featured,portrait">
+            <img src="https://via.placeholder.com/400x600/a89176/f4f1ea?text=Artwork+2" alt="Artwork 2">
+            <div class="artwork-info">
+                <div class="artwork-title">Grandmother's Gaze</div>
+                <div class="artwork-medium">Charcoal, 2024</div>
+                <div class="artwork-tags">#featured #portrait</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 3 -->
+        <div class="artwork" data-tags="featured,abstract">
+            <img src="https://via.placeholder.com/400x280/c9b99a/3d3529?text=Artwork+3" alt="Artwork 3">
+            <div class="artwork-info">
+                <div class="artwork-title">Movement in Stillness</div>
+                <div class="artwork-medium">Mixed media, 2023</div>
+                <div class="artwork-tags">#featured #abstract</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 4 -->
+        <div class="artwork" data-tags="landscape">
+            <img src="https://via.placeholder.com/400x400/6b5d4f/f4f1ea?text=Artwork+4" alt="Artwork 4">
+            <div class="artwork-info">
+                <div class="artwork-title">Highlands of Memory</div>
+                <div class="artwork-medium">Acrylic, 2023</div>
+                <div class="artwork-tags">#landscape</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 5 -->
+        <div class="artwork" data-tags="portrait,featured">
+            <img src="https://via.placeholder.com/400x550/8b7355/f4f1ea?text=Artwork+5" alt="Artwork 5">
+            <div class="artwork-info">
+                <div class="artwork-title">The Merchant</div>
+                <div class="artwork-medium">Oil on canvas, 2024</div>
+                <div class="artwork-tags">#portrait #featured</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 6 -->
+        <div class="artwork" data-tags="abstract">
+            <img src="https://via.placeholder.com/400x250/d4c5a9/3d3529?text=Artwork+6" alt="Artwork 6">
+            <div class="artwork-info">
+                <div class="artwork-title">Echoes</div>
+                <div class="artwork-medium">Digital, 2023</div>
+                <div class="artwork-tags">#abstract</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 7 -->
+        <div class="artwork" data-tags="landscape,featured">
+            <img src="https://via.placeholder.com/400x620/a89176/f4f1ea?text=Artwork+7" alt="Artwork 7">
+            <div class="artwork-info">
+                <div class="artwork-title">Rift Valley Sunset</div>
+                <div class="artwork-medium">Watercolor, 2024</div>
+                <div class="artwork-tags">#landscape #featured</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 8 -->
+        <div class="artwork" data-tags="portrait">
+            <img src="https://via.placeholder.com/400x400/c9b99a/3d3529?text=Artwork+8" alt="Artwork 8">
+            <div class="artwork-info">
+                <div class="artwork-title">Young Scholar</div>
+                <div class="artwork-medium">Pencil, 2023</div>
+                <div class="artwork-tags">#portrait</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 9 -->
+        <div class="artwork" data-tags="abstract,featured">
+            <img src="https://via.placeholder.com/400x300/8b7355/f4f1ea?text=Artwork+9" alt="Artwork 9">
+            <div class="artwork-info">
+                <div class="artwork-title">Fragments of Time</div>
+                <div class="artwork-medium">Collage, 2024</div>
+                <div class="artwork-tags">#abstract #featured</div>
+            </div>
+        </div>
+
+        <!-- ARTWORK 10 -->
+        <div class="artwork" data-tags="landscape">
+            <img src="https://via.placeholder.com/400x580/6b5d4f/f4f1ea?text=Artwork+10" alt="Artwork 10">
+            <div class="artwork-info">
+                <div class="artwork-title">Market Day</div>
+                <div class="artwork-medium">Oil on canvas, 2023</div>
+                <div class="artwork-tags">#landscape</div>
+            </div>
+        </div>
+    </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <h2>About</h2>
+            <p>Jack was born in France and raised in Addis Ababa, Ethiopia. He believes in the power of art to awaken our imagination to new places, far-off worlds, the inexhaustible wealth of stories and experience.</p>
+            <p>His work explores themes of memory, displacement, and the intersection of cultures through a variety of mediums including oil painting, charcoal, watercolor, and mixed media.</p>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:hello@jackbryan.art">hello@jackbryan.art</a></p>
+            <p>Instagram: <a href="https://instagram.com/yourhandle" target="_blank">@yourhandle</a></p>
+        </section>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                navLinks.forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Hide all sections
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Show selected section
+                const sectionId = link.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const artworks = document.querySelectorAll('.artwork');
+
+        // Show featured by default on load
+        window.addEventListener('DOMContentLoaded', () => {
+            filterArtworks('featured');
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const filter = btn.getAttribute('data-filter');
+                filterArtworks(filter);
+            });
+        });
+
+        function filterArtworks(filter) {
+            artworks.forEach(artwork => {
+                const tags = artwork.getAttribute('data-tags').split(',');
+                
+                if (filter === 'all' || tags.includes(filter)) {
+                    artwork.classList.remove('hidden');
+                } else {
+                    artwork.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
